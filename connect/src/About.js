@@ -1,12 +1,11 @@
 import React, {} from 'react'
 
-function Homefeed () {
+export  function About () {
     return (
         <div>
-        <h1>Homefeed</h1>
+        <h1>About</h1>
       </div>
     )
 }
 
 
-export default Homefeed 
