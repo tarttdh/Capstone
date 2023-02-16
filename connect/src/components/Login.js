@@ -34,26 +34,27 @@ import {useNavigate} from 'react-router-dom';
     }
 
     return(
-     <main className="form-signin">
-        <form onSubmit={loginUser}>
-            <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+    <main>
+        <div className="label">Sign In</div>
+        <div className="form-signin">
+            <form onSubmit={loginUser}>
+                <div className="form-floating">
+                <input className="form-control" placeholder="Username"
+                        onChange={e => setName(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Username</label>
+                </div>
 
-            <div className="form-floating">
-            <input className="form-control" placeholder="Username"
-                       onChange={e => setName(e.target.value)}
-                />
-                <label htmlFor="floatingInput">username</label>
-            </div>
+                <div className="form-floating">
+                <input type="password" className="form-control" id="floatingPassword" placeholder="Password"
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    <label htmlFor="floatingPassword">Password</label>
+                </div>
 
-            <div className="form-floating">
-            <input type="password" className="form-control" id="floatingPassword" placeholder="Password"
-                       onChange={e => setPassword(e.target.value)}
-                />
-                <label htmlFor="floatingPassword">Password</label>
-            </div>
-
-            <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        </form>
+                <button className="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
+            </form>
+        </div>
     </main>
     )
 }

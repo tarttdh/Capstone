@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import Container from "react-bootstrap/Container"; 
+import Container from "react-bootstrap/Container";
 
 export const Home = () => {
   let [notes, setNotes] = useState([]);
@@ -29,8 +29,7 @@ export const Home = () => {
 
   return (
       <div>
-        <h1>Homepage</h1>
-        
+        <div className='label'>Homepage</div>
     <Container>
         <ul>
           {notes.map((note) => (

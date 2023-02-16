@@ -3,6 +3,14 @@
   max-width: 330px;
   padding: 15px;
   margin: auto;
+  color: rgba(0, 0, 0, 0.3);
+  font-style: italic;
+}
+
+.label {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 2em;
 }
 
 .form-signin .checkbox {

@@ -22,15 +22,17 @@ export const Register = () => {
         return <Navigate to="/login"/>;
     }
 
-    return <main className="form-signin">
+    return <main>
+        <h1 className="label">Please Register</h1>
+        <div className="form-signin">
         <form onSubmit={submit}>
-            <h1 className="h3 mb-3 fw-normal">Please register</h1>
+            
 
             <div className="form-floating">
                 <input className="form-control" placeholder="Username"
                        onChange={e => setName(e.target.value)}
                 />
-                <label>UserName</label>
+                <label>Username</label>
             </div>
 
             <div className="form-floating">
@@ -49,5 +51,6 @@ export const Register = () => {
 
             <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
         </form>
+        </div>
     </main>
 }
