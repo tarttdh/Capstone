@@ -1,11 +1,10 @@
-import React, {} from 'react'
+import React from "react";
 
-export  function About () {
-    return (
-        <div>
-        <h1>Get to know more about </h1>
-      </div>
-    )
+export function About() {
+  return (
+    <div>
+      <h1>About</h1>
+      <h2>The Team</h2>
+    </div>
+  );
 }
-
-

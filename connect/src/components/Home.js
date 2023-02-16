@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+
 import Container from "react-bootstrap/Container"; 
 import Button from 'react-bootstrap/Button';
 
@@ -43,6 +44,8 @@ export const Home = () => {
       <div>
         <h1>Homepage</h1>
     <Button onClick={handleLogout}> Logout</Button>
+
+        <div className='label'>Homepage</div>
     <Container>
         <ul>
           {notes.map((note) => (
