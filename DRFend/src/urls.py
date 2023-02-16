@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework.routers import DefaultRouter 
-from first.views import UserViewset, MyTokenObtainPairView
+from first.views import UserViewSet, MyTokenObtainPairView, NoteViewSet
 
 
 urlpatterns = [
@@ -19,7 +19,8 @@ urlpatterns = [
 ]
 
 router = DefaultRouter()
-router.register('user', UserViewset, basename= 'user')
+router.register('user', UserViewSet, basename='user')
+router.register('notes', NoteViewSet, basename='note')
 
 
 urlpatterns += router.urls

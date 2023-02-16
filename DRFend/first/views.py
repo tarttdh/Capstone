@@ -1,11 +1,14 @@
-from rest_framework import fields, serializers
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, fields, serializers
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer,NoteSerializer
+from .models import Note
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -22,15 +25,21 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+class NoteViewSet(viewsets.ModelViewSet):
+    queryset = Note.objects.all()
+    serializer_class= NoteSerializer
+    permission_classes = (AllowAny,)
+
+    @action(detail=False, methods=['get'])
+    def user_note(self,request):
+        user = request.user
+        note = Note.objects.get(user=user)
+        serializer = self.get_serializer(note)
+        return Response(serializer.data)
 
 
-class UserViewset(viewsets.ModelViewSet):
-
-    permission_classes = (IsAuthenticated,)
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
     serializer_class = UserSerializer
     queryset = get_user_model().objects.all()
 
-class UserPost(generics.CreateAPIView):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [AllowAny]
