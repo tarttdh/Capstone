@@ -11,7 +11,7 @@ export const Register = () => {
     const submit = async e => {
         e.preventDefault();
 
-        await axios.post('http://127.0.0.1:8000/api/userpost/?format=json', {
+        await axios.post('http://127.0.0.1:8000/user/?format=json', {
             username, email, password
         });
 

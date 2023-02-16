@@ -19,7 +19,7 @@ const AuthProvider = ({children}) => {
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
+            body:JSON.stringify({'id': e.target.id.value, 'username':e.target.username.value, 'password':e.target.password.value})
         })
         let data = await response.json()
         console.log(data)
@@ -27,7 +27,7 @@ const AuthProvider = ({children}) => {
             setAuthTokens(data)
             setUser(jwt_decode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))
-            history.push('/')
+            
         }else{
             alert('Something went wrong!')
         }
@@ -37,7 +37,7 @@ const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        history.push('/login')
+    
     }
 
     let updateToken = async ()=> {
