@@ -9,8 +9,6 @@ from first.views import UserViewSet, MyTokenObtainPairView, NoteViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('posts.urls')),
-    #path('api/', include('registers.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -8,3 +8,7 @@ export const PrivateRoute = ({children, ...rest}) => {
         <Route {...rest}>{!user ? <Link to="/login" /> :   children}</Route>
     )
 }
+
+
+
+export default PrivateRoute

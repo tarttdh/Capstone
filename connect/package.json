@@ -39,6 +39,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy":"https://cat-fact.herokuapp.com/"
-  
+  "proxy": "https://cat-fact.herokuapp.com/"
 }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -6,6 +6,10 @@ import Row from "react-bootstrap/Row";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Image from "./components/Image.jpg";
 import "./components/test-card.css";
+import ArticleDetails from './ArticleDetails';
+import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+
 
 
 export class AllCategories extends Component {
@@ -15,17 +19,19 @@ export class AllCategories extends Component {
       error: null,
       isLoaded: false,
       articles: [],
+      openArticle: -1
     };
   }
 
   componentDidMount() {
-    fetch("http://127.0.0.1:8000/api/posts/?format=json")
+    fetch("http://localhost:5001/articles/?format=json")
       .then((res) => res.json())
       .then(
         (result) => {
           this.setState({
             isLoaded: true,
             articles: result,
+            setSelectedArticle: result, 
           });
         },
         (error) => {
@@ -38,12 +44,26 @@ export class AllCategories extends Component {
   }
 
    render() {
-    const { error, isLoaded, articles } = this.state;
+
+    const { error, isLoaded, articles, selectedArticle, openArticle } = this.state;
+
+    const truncate = (input) =>
+    input?.length > 300 ? `${input.substring(0, 254)}...` : input;
+
+    const openFullArticle = (id) =>
+    this.setState({
+      //if fullArticle is true change to false (vice-versa)
+      openArticle: id
+    });
+
+    //sorts by date (the problem is that each of them have a different date)
+    articles.sort((a, b) => new Date(b.Date) - new Date(a.Date));
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
-    } else {
+    }
+    else {
       return (
         
         <div>
@@ -55,30 +75,43 @@ export class AllCategories extends Component {
                   className="cards test-card"
                   style={{
                     width: "20rem",
+                    minheight: "25px"
                   }}
-                  key={article.id}
+                  key={article.index}
                 >
-                  { <Card.Img variant="top" src={Image} className="img-fluid" alt="Responsive image" /> }
+                  { <Card.Img variant="top" src={article.Image ? article.Image : Image} className="img-fluid" alt="Responsive image" /> }
                   <Card.Body>
-                    <Card.Title>{article.title}</Card.Title>
-                    <Card.Text>{article.content}</Card.Text>
+                    <Card.Title>{article.Title}</Card.Title>
+                    <Card.Text
+                     style={{
+                      cursor: 'pointer'
+                    }}
+                    ><p onClick={() => {openFullArticle(article._id)} }>{openArticle !== article._id? 
+                    truncate(article.Summary): article.Summary}</p></Card.Text>
                   </Card.Body>
                   <ListGroup className="list-group-flush">
-                    <ListGroup.Item>Written by {article.author}</ListGroup.Item>
-                    <ListGroup.Item>Read Time </ListGroup.Item>
-                    <ListGroup.Item>Level of Priority</ListGroup.Item>
+                    <ListGroup.Item>Written by:  {article.Author || 'none'}</ListGroup.Item>
+                    <ListGroup.Item>Read Time: {article.Read_Time} </ListGroup.Item>
+                    <ListGroup.Item>Date: {article.Date ? article.Date : 'NA'}</ListGroup.Item>
                   </ListGroup>
                   <Card.Body className= "card-actions">
+                    <Link to= 'details' element={<ArticleDetails />}>
                     <Button
                       variant="primary"
                       style={{
                         backgroundColor: "darkgreen",
                         border: "darkgreen 1px solid",
                       }}
-                    >
-                      Read More
+
+
+                      //displays the exact article window.
+                      onClick={() =>{openFullArticle(article._id)} }>{openArticle !== article._id? 
+                        'Read More':
+                          <ArticleDetails className="popupModal"/>} 
+                 
                     </Button>
-                    <Card.Link className= "card-link" href="#">Link to article</Card.Link>
+                    </Link>
+                    <Card.Link to= {article.link} className= "card-link" href="#">Link to article</Card.Link>
                   </Card.Body>
                 </Card>
             ))}

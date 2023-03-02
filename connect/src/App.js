@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Switch } from "react-router-dom";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Home } from "./components/Home";
@@ -10,10 +10,12 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import AuthProvider, { AuthContext } from "./context/AuthContext";
 import { PrivateRoute } from "./utils/PrivateRoute";
 import Profile from "./components/Profile";
+import ArticleDetails from "./ArticleDetails";
 //changes were made
 function App() {
   return (
     <Router>
+       
       <AuthProvider>
         <header className="p-3 bg-dark text-white">
           <div className="container">
@@ -21,7 +23,7 @@ function App() {
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
-                  <Link to="/" className="nav-link px-2 text-white">
+                  <Link to="/Home" className="nav-link px-2 text-white">
                     Home
                   </Link>
                 </li>
@@ -43,6 +45,7 @@ function App() {
                 <Link to="/register" className="btn btn-outline-light me-2">
                   Register
                 </Link>
+
               </div>
             </div>
           </div>
@@ -58,11 +61,17 @@ function App() {
           </Nav>
 
         <Routes>
-          <Route path="/" element={<AllCategories />} />
-          <Route path="/About" element={<About />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/Home" element={<AllCategories />} />
+          <Route path="/About" element={<About />} />
           <Route path="/register" element={<Register />} />
           <Route path="/Profile" element={<Profile />} />
+          <Route path="/Home/details" element={<ArticleDetails />} />
+
+          
+          {/* <Route path= "/Home/details" element={<ArticleDetails />} /> */}
+
+
         </Routes>
       </AuthProvider>
     </Router>
