@@ -19,7 +19,8 @@ export class AllCategories extends Component {
       error: null,
       isLoaded: false,
       articles: [],
-      openArticle: -1
+      openArticle: -1,
+      selectArticle: -1
     };
   }
 
@@ -30,8 +31,7 @@ export class AllCategories extends Component {
         (result) => {
           this.setState({
             isLoaded: true,
-            articles: result,
-            setSelectedArticle: result, 
+            articles: result, 
           });
         },
         (error) => {
@@ -45,7 +45,7 @@ export class AllCategories extends Component {
 
    render() {
 
-    const { error, isLoaded, articles, selectedArticle, openArticle } = this.state;
+    const { error, isLoaded, articles, selectArticle, openArticle } = this.state;
 
     const truncate = (input) =>
     input?.length > 300 ? `${input.substring(0, 254)}...` : input;
@@ -54,6 +54,12 @@ export class AllCategories extends Component {
     this.setState({
       //if fullArticle is true change to false (vice-versa)
       openArticle: id
+    });
+
+    const selectedArticle = (id) =>
+    this.setState({
+      //if fullArticle is true change to false (vice-versa)
+      selectArticle: id
     });
 
     //sorts by date (the problem is that each of them have a different date)
@@ -91,11 +97,11 @@ export class AllCategories extends Component {
                   </Card.Body>
                   <ListGroup className="list-group-flush">
                     <ListGroup.Item>Written by:  {article.Author || 'none'}</ListGroup.Item>
-                    <ListGroup.Item>Read Time: {article.Read_Time} </ListGroup.Item>
+                    <ListGroup.Item>Read Time: {article.Read_Time} min</ListGroup.Item>
                     <ListGroup.Item>Date: {article.Date ? article.Date : 'NA'}</ListGroup.Item>
                   </ListGroup>
                   <Card.Body className= "card-actions">
-                    <Link to= 'details' element={<ArticleDetails />}>
+                   
                     <Button
                       variant="primary"
                       style={{
@@ -103,14 +109,13 @@ export class AllCategories extends Component {
                         border: "darkgreen 1px solid",
                       }}
 
-
                       //displays the exact article window.
-                      onClick={() =>{openFullArticle(article._id)} }>{openArticle !== article._id? 
+                      onClick={() =>{selectedArticle(article._id)} }>{selectArticle !== article._id? 
                         'Read More':
-                          <ArticleDetails className="popupModal"/>} 
+                          <ArticleDetails article={article} className="popupModal"/>} 
                  
-                    </Button>
-                    </Link>
+                    </Button> 
+                    
                     <Card.Link to= {article.link} className= "card-link" href="#">Link to article</Card.Link>
                   </Card.Body>
                 </Card>

@@ -1,10 +1,18 @@
 const express = require('express'); 
 const bodyParser = require('body-parser'); 
+
+//uses mongoDb NOT mongoose 
 const database = require('./Articles'); 
-const data = require('./article');
+
 const cors = require('cors'); 
 
-const placesRoutes = require('./routes/places');
+//Categories 
+const micro = require('./micro')
+
+//update url 
+const updateURL = require('./update_url')
+
+const findUser = require('./user')
 
 const app = express(); 
 
@@ -15,12 +23,16 @@ app.use(cors({
 app.use(bodyParser.json()); 
 
 
-
-
 app.get('/articles/', database.getArticles); 
 
-app.get('/articles/:id', data.getArticle); 
+app.get('/micro_articles/', micro.Category); 
 
+app.get('/user/', findUser.getUser); 
 
+app.put('/update_url/', updateURL.updateURL);
 
-app.listen(5001); 
+ 
+// start the server
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

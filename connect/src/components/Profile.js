@@ -1,44 +1,53 @@
-import React, { useEffect } from 'react';
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
-import Button from 'react-bootstrap/esm/Button';
-import jwt_decode from "jwt-decode";
-
+import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Profile = () => {
-  let {result, user, setUser, setAuthTokens}=useContext(AuthContext);
+  const { user, isAuthenticated } = useAuth0();
 
-    fetch("http://127.0.0.1:8000/notes/?format=json", {
-      method:"GET",
-      headers:{
-          "Content-Type":"application/json"
+  const [responseData, setResponseData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5001/user/?email=${user.email}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        console.log(data);
+        setResponseData(data);
+      } catch (error) {
+        console.error(error);
+        setResponseData(null);
       }
-      
-  })
-    .then (response => response.json() )
-    .then(result => {
-        console.log('result: ' , result)
-        console.log('id: ', user.id)
-      
-    })
+    }; 
   
-    const handleLogout = () => {
-        localStorage.clear();
-        setUser({});
-        setAuthTokens({});
-     };
-     
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated, user.email]);
 
-  return (
+  if (!isAuthenticated) {
+    return <div>Please log in to see your profile information.</div>;
+  }
+
+  console.log(responseData); 
+
+  return responseData ? (
     <div>
-        {user?
-        <p>Welcome {user?.username}</p> : <p>Must Login</p>}     
-       
-
-    <Button onClick={handleLogout}> Logout</Button>
+      {/* <img src={responseData.picture} alt="Profile Picture" /> */}
+      <p>Email: {responseData.email}</p>
+      {responseData.URLs
+        ? responseData.URLs.map(URL => (
+            <p key={URL}>URL: {URL}</p>
+          ))
+        : "No saved URLs"}
     </div>
-  )
-}
+  ) : (
+    <div>Loading...</div>
+  );
+};
 
-export default Profile
-
+export default Profile;
